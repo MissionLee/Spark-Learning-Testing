@@ -2,6 +2,7 @@ package com.missionlee.spark.structuredstreamingtest
 
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerConfig, ProducerRecord}
 import java.util
+import java.util.Date
 /**
   *
   */
@@ -20,8 +21,10 @@ object KafkaProducerForHelloWorld {
     while(true){
       // 创建一个 几行的，每一行是几个数字的字符串
       (1 to messagesPerSec.toInt).foreach { messageNum =>
-        val str = (1 to wordsPerMessage.toInt).map(x => scala.util.Random.nextInt(10).toString)
-          .mkString(" ")
+//        val str = (1 to wordsPerMessage.toInt).map(x => scala.util.Random.nextInt(10).toString)
+//          .mkString(" ")
+        val str = new Date().getTime.toString; //I want to test how fast structured streaming can deal with
+                                       // the data ,so I just send the time string to kafka
         //print(str)
         //println()
         // 把这个字符串封装成 一条记录
@@ -29,7 +32,7 @@ object KafkaProducerForHelloWorld {
         // 发送这条记录
         producer.send(message)
       }
-      Thread.sleep(1) // sleep 的时间 根据需求 调整
+      Thread.sleep(10) // sleep 的时间 根据需求 调整
     }
   }
 }
